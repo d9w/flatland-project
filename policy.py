@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 class PolicyNetwork(nn.Module):
 
-    def __init__(self, state_size, action_size, hidsize1=128, hidsize2=128):
+    def __init__(self, state_size, action_size, hidsize1, hidsize2):
         super(PolicyNetwork, self).__init__()
 
         self.fc1 = nn.Linear(state_size, hidsize1)
@@ -28,14 +28,13 @@ class PolicyNetwork(nn.Module):
 class NeuroevoPolicy:
     """A static policy network to be optimized by evolution"""
 
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size, action_size, h1, h2):
 
         self.state_size = state_size
         self.action_size = action_size
-        self.hidsize = 128
         self.device = torch.device("cpu")
         self.model = PolicyNetwork(state_size, action_size,
-                                   hidsize1=self.hidsize, hidsize2=self.hidsize).to(self.device)
+                                   hidsize1=h1, hidsize2=h2).to(self.device)
         self.model = self.model.to(self.device).double()
 
     def act(self, state):
